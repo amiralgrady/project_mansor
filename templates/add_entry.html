@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}إضافة مذكرة جديدة - تطبيق المذكرات اليومية{% endblock %}
+
+{% block content %}
+<div class="form-section">
+    <h2>إضافة مذكرة جديدة</h2>
+    
+    <form method="POST" action="{{ url_for('add_entry') }}" class="entry-form">
+        <div class="form-group">
+            <label for="content">محتوى المذكرة:</label>
+            <textarea 
+                id="content" 
+                name="content" 
+                rows="10" 
+                placeholder="اكتب مذكرتك هنا..."
+                required
+            ></textarea>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">حفظ المذكرة</button>
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">إلغاء</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+

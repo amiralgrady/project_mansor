@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}المذكرات - تطبيق المذكرات اليومية{% endblock %}
+
+{% block content %}
+<div class="filter-section">
+    <h2>تصفية المذكرات</h2>
+    <div class="filter-buttons">
+        <a href="{{ url_for('index', filter='all') }}" 
+           class="btn {% if filter_type == 'all' %}btn-active{% endif %}">
+            جميع المذكرات
+        </a>
+        <a href="{{ url_for('index', filter='today') }}" 
+           class="btn {% if filter_type == 'today' %}btn-active{% endif %}">
+            اليوم
+        </a>
+        <a href="{{ url_for('index', filter='month', value=current_date.strftime('%Y-%m')) }}" 
+           class="btn {% if filter_type == 'month' %}btn-active{% endif %}">
+            هذا الشهر
+        </a>
+    </div>
+</div>
+
+<div class="entries-section">
+    <h2>مذكراتي</h2>
+    
+    {% if entries %}
+        <div class="entries-list">
+            {% for entry in entries %}
+                <div class="entry-card">
+                    <div class="entry-header">
+                        <span class="entry-date">
+                            {{ entry.created_at.strftime('%Y-%m-%d') }}
+                        </span>
+                        <span class="entry-time">
+                            {{ entry.created_at.strftime('%H:%M') }}
+                        </span>
+                    </div>
+                    <div class="entry-content">
+                        {% if entry.content|length > 150 %}
+                            {{ entry.content[:150] }}...
+                        {% else %}
+                            {{ entry.content }}
+                        {% endif %}
+                    </div>
+                    <div class="entry-actions">
+                        <a href="{{ url_for('view_entry', entry_id=entry.id) }}" class="btn btn-primary">
+                            قراءة المزيد
+                        </a>
+                        <form method="POST" action="{{ url_for('delete_entry', entry_id=entry.id) }}" 
+                              onsubmit="return confirm('هل أنت متأكد من حذف هذه المذكرة؟');" 
+                              style="display: inline;">
+                            <button type="submit" class="btn btn-danger">حذف</button>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="no-entries">
+            <p>لا توجد مذكرات حتى الآن.</p>
+            <a href="{{ url_for('add_entry') }}" class="btn btn-primary">أضف أول مذكرة</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+

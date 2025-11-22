@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}مذكرة {{ entry.id }} - تطبيق المذكرات اليومية{% endblock %}
+
+{% block content %}
+<div class="entry-detail">
+    <div class="entry-detail-header">
+        <a href="{{ url_for('index') }}" class="btn btn-secondary">← العودة</a>
+        <h2>تفاصيل المذكرة</h2>
+    </div>
+    
+    <div class="entry-detail-card">
+        <div class="entry-detail-meta">
+            <span class="entry-date">
+                📅 {{ entry.created_at.strftime('%Y-%m-%d') }}
+            </span>
+            <span class="entry-time">
+                🕐 {{ entry.created_at.strftime('%H:%M') }}
+            </span>
+        </div>
+        
+        <div class="entry-detail-content">
+            {{ entry.content|nl2br|safe }}
+        </div>
+        
+        <div class="entry-detail-actions">
+            <a href="{{ url_for('index') }}" class="btn btn-secondary">العودة للقائمة</a>
+            <form method="POST" action="{{ url_for('delete_entry', entry_id=entry.id) }}" 
+                  onsubmit="return confirm('هل أنت متأكد من حذف هذه المذكرة؟');" 
+                  style="display: inline;">
+                <button type="submit" class="btn btn-danger">حذف المذكرة</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
